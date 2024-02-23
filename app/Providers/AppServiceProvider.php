@@ -7,6 +7,7 @@ use App\Models\Text;
 use App\Observers\SettingsObserver;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Settings::observe(SettingsObserver::class);
 
+        //if table 'texts' and 'settings' exists
+        if (!Schema::hasTable('texts') || !Schema::hasTable('settings')) {
+            return;
+        }
         $texts = Text::query()->pluck('text', 'key')->toArray();
         $settings = Settings::query()->first();
 
@@ -38,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         //Set global config token
-        Config::set('nutgram.token', settings('bot_token'));
+        Config::set('nutgram.token', settings('bot_token') ?? config('nutgram.token'));
 
         //Localization for Admin panel
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {

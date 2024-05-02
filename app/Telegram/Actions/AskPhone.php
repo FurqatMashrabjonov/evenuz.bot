@@ -11,6 +11,7 @@ class AskPhone
     {
         $bot->sendMessage(
             text: text('phone.ask_phone', lang($bot->chat()->id)),
+            parse_mode: 'HTML',
             reply_markup: ReplyMarkupKeyboards::phone()
         );
     }

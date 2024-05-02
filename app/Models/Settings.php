@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed $webhook_was_set
+ */
 class Settings extends Model
 {
     protected $table = 'settings';
